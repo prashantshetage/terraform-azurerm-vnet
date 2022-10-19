@@ -1,3 +1,25 @@
+output "virtual_network" {
+  value = azurerm_virtual_network.vnet
+}
+
+output "subnet" {
+  value = azurerm_subnet.snet
+}
+
+output "network_watcher_id" {
+  description = "ID of Network Watcher"
+  value       = var.create_network_watcher != false ? element(concat(azurerm_network_watcher.nwatcher.*.id, [""]), 0) : null
+}
+
+output "firewall_subnet" {
+  value = azurerm_subnet.fw-snet
+}
+
+output "gateway_subnet" {
+  value = azurerm_subnet.gw_snet
+}
+
+/*
 output "resource_group_name" {
   description = "The name of the resource group in which resources are created"
   value       = element(coalescelist(data.azurerm_resource_group.rgrp.*.name, azurerm_resource_group.rg.*.name, [""]), 0)
@@ -38,17 +60,9 @@ output "subnet_address_prefixes" {
   value       = flatten(concat([for s in azurerm_subnet.snet : s.address_prefix], [var.gateway_subnet_address_prefix != null ? azurerm_subnet.gw_snet.0.address_prefixes : null], [var.firewall_subnet_address_prefix != null ? azurerm_subnet.fw-snet.0.address_prefixes : null]))
 }
 
-output "network_security_group_ids" {
-  description = "List of Network security groups and ids"
-  value       = [for n in azurerm_network_security_group.nsg : n.id]
-}
 
 output "ddos_protection_plan" {
   description = "Ddos protection plan details"
   value       = var.create_ddos_plan ? element(concat(azurerm_network_ddos_protection_plan.ddos.*.id, [""]), 0) : null
 }
-
-output "network_watcher_id" {
-  description = "ID of Network Watcher"
-  value       = var.create_network_watcher != false ? element(concat(azurerm_network_watcher.nwatcher.*.id, [""]), 0) : null
-}
+*/
